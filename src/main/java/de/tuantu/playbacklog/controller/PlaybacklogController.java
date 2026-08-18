@@ -1,9 +1,39 @@
 package de.tuantu.playbacklog.controller;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import de.tuantu.playbacklog.service.FileUploadService;
+import de.tuantu.playbacklog.service.PlaybackLogJobService;
+import de.tuantu.playbacklog.service.domain.BatchJobDto;
+import de.tuantu.playbacklog.service.domain.StoredFile;
+import org.springframework.batch.core.job.JobExecution;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.io.InputStream;
 
 @RestController
 @RequestMapping("/playbacklog")
 public class PlaybacklogController {
+
+    private final PlaybackLogJobService playbackLogService;
+    private final FileUploadService fileUploadService;
+
+    public PlaybacklogController(PlaybackLogJobService playbackLogService, FileUploadService fileUploadService) {
+        this.playbackLogService = playbackLogService;
+        this.fileUploadService = fileUploadService;
+    }
+
+    @PostMapping("/startupload")
+    public BatchJobDto uploadFileAndStartImportJob(@RequestParam("file") MultipartFile file) throws IOException {
+        try (InputStream inputStream = file.getInputStream()) {
+            StoredFile storedFile = fileUploadService.store(inputStream, file.getOriginalFilename());
+            JobExecution job = playbackLogService.triggerImport(storedFile);
+            return new BatchJobDto(
+                    job.getId(),
+                    job.getJobInstance().getJobName(),
+                    job.getStatus()
+            );
+        }
+    }
+
 }
