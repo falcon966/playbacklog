@@ -4,7 +4,6 @@ import de.tuantu.playbacklog.persistence.PlaybackLogRepository;
 import de.tuantu.playbacklog.persistence.model.PlaybackLogEntity;
 import de.tuantu.playbacklog.service.PlaybackLogEnrichingService;
 import de.tuantu.playbacklog.service.domain.PlaybackLogCsvInputDto;
-import de.tuantu.playbacklog.service.domain.StoredFile;
 import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.core.job.Job;
 import org.springframework.batch.core.job.builder.JobBuilder;

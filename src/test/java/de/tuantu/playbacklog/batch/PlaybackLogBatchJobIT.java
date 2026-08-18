@@ -18,6 +18,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 @IntegrationTest
 @SpringBatchTest
 public class PlaybackLogBatchJobIT {
+
+    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     @Autowired
     private JobOperatorTestUtils jobOperatorTestUtils;
 
