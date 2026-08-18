@@ -1,3 +1,7 @@
 spring:
   application:
     name: playbacklog
+
+playbacklog:
+  storage:
+    baseDir: /tmp/playbacklog
