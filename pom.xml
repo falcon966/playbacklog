@@ -89,6 +89,11 @@
             <artifactId>testcontainers-postgresql</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.jeasy</groupId>
+            <artifactId>easy-random</artifactId>
+            <version>6.0.0</version>
+        </dependency>
     </dependencies>
 
     <build>
