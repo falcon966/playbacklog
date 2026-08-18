@@ -26,18 +26,7 @@ public class FileUploadService {
 
     public StoredFile store(InputStream in, String originalFilename) throws IOException {
 
-        UUID uuid = UUID.randomUUID();
-        String filename = uuid+"_"+originalFilename;
-        Path target = fileUploadBaseDir.resolve(filename).normalize();
-        if (!target.startsWith(fileUploadBaseDir)) throw new IllegalArgumentException("Ungültiger Dateiname");
-
-        StoredFile fileInfo = new StoredFile(
-            uuid,
-            filename,
-            target,
-            StorageType.LOCAL_FILESYSTEM
-        );
-
+        StoredFile fileInfo = createFileInfo(originalFilename);
         Path tempFile = Files.createTempFile(fileUploadBaseDir, "upload_", ".tmp");
         try (in) {
             Files.copy(
@@ -54,9 +43,22 @@ public class FileUploadService {
 
         } catch (IOException e) {
             Files.deleteIfExists(tempFile);
-            throw new IOException("Fehler beim Speichern der Datei. Temporäre Datei wurde aufgeräumt.", e);
+            throw new IOException("Fehler beim Speichern der Playbacklog Datei. Temporäre Datei wurde aufgeräumt.", e);
         }
         return fileInfo;
+    }
+
+    private StoredFile createFileInfo(String originalFilename) {
+        UUID uuid = UUID.randomUUID();
+        String filename = uuid + "_" + originalFilename;
+        Path target = fileUploadBaseDir.resolve(filename).normalize();
+        if (!target.startsWith(fileUploadBaseDir)) throw new IllegalArgumentException("Ungültiger Dateiname");
+        return new StoredFile(
+                uuid,
+                filename,
+                target,
+                StorageType.LOCAL_FILESYSTEM
+        );
     }
 
 }
