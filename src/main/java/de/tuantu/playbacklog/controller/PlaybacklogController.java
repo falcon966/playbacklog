@@ -28,22 +28,14 @@ public class PlaybacklogController {
         try (InputStream inputStream = file.getInputStream()) {
             StoredFile storedFile = fileUploadService.store(inputStream, file.getOriginalFilename());
             JobExecution job = playbackLogService.triggerImport(storedFile);
-            return new BatchJobDto(
-                    job.getId(),
-                    job.getJobInstance().getJobName(),
-                    job.getStatus()
-            );
+            return BatchJobDto.from(job);
         }
     }
 
     @GetMapping("/jobstatus/{jobId}")
     public BatchJobDto getJobStatus(@PathVariable long jobId) {
         JobExecution job = playbackLogService.getJob(jobId);
-        return new BatchJobDto(
-                job.getId(),
-                job.getJobInstance().getJobName(),
-                job.getStatus()
-        );
+        return BatchJobDto.from(job);
     }
 
 }
