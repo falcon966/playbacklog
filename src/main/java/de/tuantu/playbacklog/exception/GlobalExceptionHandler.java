@@ -13,7 +13,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(IOException.class)
     public ProblemDetail handleIOException(IOException ex) {
         ProblemDetail problem = ProblemDetail.forStatusAndDetail(
-                HttpStatus.BAD_REQUEST, "Die Datei konnte nicht verarbeitet werden.");
+                HttpStatus.BAD_REQUEST, ex.getMessage());
         problem.setTitle("Upload fehlgeschlagen");
         return problem;
     }
