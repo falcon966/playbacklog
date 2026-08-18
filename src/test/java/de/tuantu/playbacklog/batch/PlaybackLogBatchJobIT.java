@@ -2,6 +2,9 @@ package de.tuantu.playbacklog.batch;
 
 import de.tuantu.playbacklog.IntegrationTest;
 import de.tuantu.playbacklog.persistence.PlaybackLogRepository;
+import de.tuantu.playbacklog.service.PlaybackLogJobService;
+import de.tuantu.playbacklog.service.domain.StoredFile;
+import de.tuantu.playbacklog.shared.StorageType;
 import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.job.JobExecution;
@@ -11,6 +14,7 @@ import org.springframework.batch.test.JobOperatorTestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.batch.test.context.SpringBatchTest;
 
+import java.nio.file.Path;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -19,22 +23,25 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBatchTest
 public class PlaybackLogBatchJobIT {
 
-    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
-    @Autowired
-    private JobOperatorTestUtils jobOperatorTestUtils;
-
     @Autowired
     private PlaybackLogRepository repository;
 
+    @Autowired
+    private PlaybackLogJobService playbackLogJobService;
+
     @Test
-    void testEntireJobCompletesAndSavesData() throws Exception {
+    void testEntireJobCompletesAndSavesData(){
 
-        JobParameters params = new JobParametersBuilder()
-                .addString("filePath", "src/test/resources/test-logs.csv")
-                .addString("runId", UUID.randomUUID().toString())
-                .toJobParameters();
+        StoredFile storedFile = new StoredFile(
+                UUID.randomUUID(),
+                "test-logs.csv",
+                Path.of("src/test/resources/test-logs.csv"),
+                StorageType.LOCAL_FILESYSTEM
+        );
 
-        JobExecution jobExecution = jobOperatorTestUtils.startJob(params);
+        JobExecution jobExecution = playbackLogJobService.triggerImport(
+                storedFile
+        );
 
         assertThat(jobExecution.getStatus()).isEqualTo(BatchStatus.COMPLETED);
 
