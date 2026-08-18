@@ -1,0 +1,38 @@
+services:
+  postgres:
+    image: postgres:17-alpine
+    container_name: playbacklog-db
+    environment:
+      POSTGRES_DB: playbacklog
+      POSTGRES_USER: playbacklog
+      POSTGRES_PASSWORD: playbacklog
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U playbacklog -d playbacklog"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: playbacklog-app
+    environment:
+      DB_URL: jdbc:postgresql://postgres:5432/playbacklog
+      DB_USER: playbacklog
+      DB_PASSWORD: playbacklog
+    ports:
+      - "8080:8080"
+    volumes:
+      - playbacklog-storage:/tmp/playbacklog
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+volumes:
+  postgres-data:
+  playbacklog-storage:
