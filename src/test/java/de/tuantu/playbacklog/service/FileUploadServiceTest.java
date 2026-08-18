@@ -15,6 +15,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -52,6 +53,15 @@ public class FileUploadServiceTest {
         assertThat(storedFile.storagePath()).isNotNull();
         assertThat(storedFile.storagePath().toString()).contains(tempBaseDir.toString());
         assertThat(storedFile.storagePath().toString()).contains(originalFilename);
+    }
+
+    @Test
+    void storeFileTestInvalidFilename(){
+        String originalFilename = "../../../etc/invalid";
+        String fileContent = "2026-01-15T08:30:00Z,USRC17607839,RADIO_WDR,245,150000";
+        InputStream in = new ByteArrayInputStream(fileContent.getBytes(StandardCharsets.UTF_8));
+
+        assertThatThrownBy(() -> fileUploadService.store(in, originalFilename)).isInstanceOf(IllegalArgumentException.class);
     }
 
 }
