@@ -2,6 +2,12 @@ spring:
   application:
     name: playbacklog
 
+  batch:
+    jdbc:
+      initialize-schema: never
+    job:
+      enabled: false
+
   datasource:
     url: ${DB_URL}
     username: ${DB_USER:test}
