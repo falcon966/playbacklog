@@ -6,6 +6,7 @@ import org.springframework.batch.core.job.JobExecution;
 import org.springframework.batch.core.job.parameters.JobParameters;
 import org.springframework.batch.core.job.parameters.JobParametersBuilder;
 import org.springframework.batch.core.launch.JobOperator;
+import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -14,10 +15,12 @@ import java.util.UUID;
 public class PlaybackLogJobService {
     private final JobOperator jobOperator;
     private final Job playbackLogImportJob;
+    private final JobRepository jobRepository;
 
-    public PlaybackLogJobService(JobOperator jobOperator, Job playbackLogImportJob) {
+    public PlaybackLogJobService(JobOperator jobOperator, Job playbackLogImportJob, JobRepository jobRepository) {
         this.jobOperator = jobOperator;
         this.playbackLogImportJob = playbackLogImportJob;
+        this.jobRepository = jobRepository;
     }
 
     public JobExecution triggerImport(
@@ -34,5 +37,9 @@ public class PlaybackLogJobService {
             throw new RuntimeException("Konnte den Batch-Job nicht starten", e);
         }
 
+    }
+
+    public JobExecution getJob(long jobId) {
+        return jobRepository.getJobExecution(jobId);
     }
 }

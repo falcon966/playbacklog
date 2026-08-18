@@ -44,4 +44,23 @@ public class PlaybackLogBatchJobIT {
 
         assertThat(repository.findAll()).hasSize(2);
     }
+
+    @Test
+    void testRetrieveJob(){
+        StoredFile storedFile = new StoredFile(
+                UUID.randomUUID(),
+                "test-logs.csv",
+                Path.of("src/test/resources/test-logs.csv"),
+                StorageType.LOCAL_FILESYSTEM
+        );
+
+        JobExecution jobExecution = playbackLogJobService.triggerImport(
+                storedFile
+        );
+
+        JobExecution result = playbackLogJobService.getJob(jobExecution.getId());
+
+        assertThat(result).isNotNull();
+        assertThat(result.getJobInstance()).isEqualTo(jobExecution.getJobInstance());
+    }
 }

@@ -36,4 +36,14 @@ public class PlaybacklogController {
         }
     }
 
+    @GetMapping("/jobstatus/{jobId}")
+    public BatchJobDto getJobStatus(@PathVariable long jobId) {
+        JobExecution job = playbackLogService.getJob(jobId);
+        return new BatchJobDto(
+                job.getId(),
+                job.getJobInstance().getJobName(),
+                job.getStatus()
+        );
+    }
+
 }
