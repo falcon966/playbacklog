@@ -1,0 +1,3 @@
+timestamp,isrc_code,station_id,duration_seconds,listener_count
+2026-01-15T08:30:00Z,USRC17607839,RADIO_WDR,245,150000
+2026-01-15T08:35:00Z,DEFR32400001,RADIO_WDR,180,150000
