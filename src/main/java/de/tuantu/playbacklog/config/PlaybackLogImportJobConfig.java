@@ -25,6 +25,9 @@ import org.springframework.transaction.PlatformTransactionManager;
 @Configuration
 public class PlaybackLogImportJobConfig {
 
+    @Value("${playbacklog.batchSize:100}")
+    private int batchSize;
+
     private final PlaybackLogEnrichingService processor;
 
     public PlaybackLogImportJobConfig(PlaybackLogEnrichingService processor) {
@@ -69,7 +72,7 @@ public class PlaybackLogImportJobConfig {
             RepositoryItemWriter<PlaybackLogEntity> writer) {
 
         return new StepBuilder("playbackLogStep", jobRepository)
-                .<PlaybackLogCsvInputDto, PlaybackLogEntity>chunk(100)
+                .<PlaybackLogCsvInputDto, PlaybackLogEntity>chunk(batchSize)
                 .transactionManager(transactionManager)
                 .reader(reader)
                 .processor(this.processor)
