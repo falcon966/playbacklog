@@ -50,12 +50,11 @@ public class FileUploadService {
 
     private StoredFile createFileInfo(String originalFilename) {
         UUID uuid = UUID.randomUUID();
-        String filename = uuid + "_" + originalFilename;
-        Path target = fileUploadBaseDir.resolve(filename).normalize();
+        Path target = fileUploadBaseDir.resolve(originalFilename).normalize();
         if (!target.startsWith(fileUploadBaseDir)) throw new IllegalArgumentException("Ungültiger Dateiname");
         return new StoredFile(
                 uuid,
-                filename,
+                originalFilename,
                 target,
                 StorageType.LOCAL_FILESYSTEM
         );

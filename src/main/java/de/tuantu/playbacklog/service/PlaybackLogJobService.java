@@ -28,7 +28,7 @@ public class PlaybackLogJobService {
     ){
         JobParameters jobParameters = new JobParametersBuilder()
                 .addString("filePath", storedFile.storagePath().toAbsolutePath().toString())
-                .addString("runId", storedFile.id().toString())
+                .addString("filename", storedFile.filename())
                 .toJobParameters();
         try {
             return jobOperator.start(playbackLogImportJob, jobParameters);

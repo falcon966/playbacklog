@@ -62,4 +62,14 @@ public class PlaybackLogEntity {
     @Column(name = "listener_seconds")
     private long listenedSeconds;
 
+    @Getter
+    @Setter
+    @Column(name = "import_filename")
+    private String importFilename;
+
+    @Getter
+    @Setter
+    @Column(name = "import_job_id")
+    private long importJobId;
+
 }

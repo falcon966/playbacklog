@@ -9,6 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.job.JobExecution;
+import org.springframework.batch.test.JobRepositoryTestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.batch.test.context.SpringBatchTest;
 
@@ -31,9 +32,13 @@ public class PlaybackLogBatchJobIT {
     @Autowired
     private PlaybackLogJobService playbackLogJobService;
 
+    @Autowired
+    private JobRepositoryTestUtils jobRepositoryTestUtils;
+
     @BeforeEach
-    void clearRepository(){
+    void cleanUp(){
         repository.deleteAll();
+        jobRepositoryTestUtils.removeJobExecutions();
     }
 
     @Test

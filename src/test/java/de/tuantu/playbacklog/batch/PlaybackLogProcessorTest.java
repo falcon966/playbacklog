@@ -10,6 +10,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import java.time.OffsetDateTime;
 import java.util.Optional;
@@ -28,6 +29,9 @@ public class PlaybackLogProcessorTest {
 
     @Test
     void process_MapsCsvInputToEntityCorrectly(){
+
+        ReflectionTestUtils.setField(processor, "jobId", 12345L);
+        ReflectionTestUtils.setField(processor, "filename", "test-file.csv");
 
         PlaybackLogCsvInputDto input = new PlaybackLogCsvInputDto(
                 OffsetDateTime.parse("2026-01-15T08:30:00Z"),

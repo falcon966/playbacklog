@@ -4,19 +4,28 @@ import de.tuantu.playbacklog.persistence.model.PlaybackLogEntity;
 import de.tuantu.playbacklog.service.domain.PlaybackLogCsvInputDto;
 import de.tuantu.playbacklog.service.domain.WorkCatalogDto;
 import org.jspecify.annotations.NonNull;
+import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.infrastructure.item.ItemProcessor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @Service
+@StepScope
 public class PlaybackLogEnrichingService implements ItemProcessor<PlaybackLogCsvInputDto, PlaybackLogEntity> {
 
-    private WorkCatalogAPIService workCatalogAPIService;
+    private final WorkCatalogAPIService workCatalogAPIService;
 
     public PlaybackLogEnrichingService(WorkCatalogAPIService workCatalogAPIService) {
         this.workCatalogAPIService = workCatalogAPIService;
     }
+
+    @Value("#{stepExecution.jobExecution.jobInstance.id}")
+    private Long jobId;
+
+    @Value("#{jobParameters['filename']}")
+    private String filename;
 
     @Override
     public PlaybackLogEntity process(@NonNull PlaybackLogCsvInputDto item) {
@@ -27,6 +36,8 @@ public class PlaybackLogEnrichingService implements ItemProcessor<PlaybackLogCsv
         long listenedSeconds = (long) item.durationSeconds() * item.listenerCount();
 
         PlaybackLogEntity entity = new PlaybackLogEntity();
+        entity.setImportJobId(jobId);
+        entity.setImportFilename(filename);
         entity.setTs(item.timestamp());
         entity.setIsrcCode(item.isrcCode());
         entity.setStationId(item.stationId());
