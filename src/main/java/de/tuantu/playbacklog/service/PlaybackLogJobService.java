@@ -27,10 +27,9 @@ public class PlaybackLogJobService {
     public JobExecution triggerImport(
             StoredFile storedFile
     ){
-        UUID runId = UUID.randomUUID();
         JobParameters jobParameters = new JobParametersBuilder()
                 .addString("filePath", storedFile.storagePath().toAbsolutePath().toString())
-                .addString("runId", runId.toString())
+                .addString("runId", storedFile.id().toString())
                 .toJobParameters();
         try {
             return jobOperator.start(playbackLogImportJob, jobParameters);
