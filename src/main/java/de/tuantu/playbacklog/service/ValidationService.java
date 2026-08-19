@@ -1,6 +1,7 @@
 package de.tuantu.playbacklog.service;
 
 import de.tuantu.playbacklog.service.domain.PlaybackLogCsvInputDto;
+import org.jspecify.annotations.NonNull;
 import org.springframework.batch.infrastructure.item.validator.ValidationException;
 import org.springframework.batch.infrastructure.item.validator.Validator;
 import org.springframework.stereotype.Service;
@@ -12,7 +13,7 @@ import java.util.List;
 public class ValidationService implements Validator<PlaybackLogCsvInputDto> {
 
     @Override
-    public void validate(PlaybackLogCsvInputDto item) throws ValidationException {
+    public void validate(@NonNull PlaybackLogCsvInputDto item) throws ValidationException {
         List<String> violations = new ArrayList<>();
         // TODO: Implement validation business logic
 
