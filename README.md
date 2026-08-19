@@ -19,7 +19,7 @@ docker compose up --build
 - Alternativ kann die App direkt über den folgenden Befehl gestartet werden. Voraussetzung hierfür ist, dass die PostgreSQL-Datenbank bereits läuft und die richtigen Umgebungsvariablen bzw. Startparameter gesetzt sind
 
 ````bash
-./mvnw spring-boot:run -Dspring-boot.run.arguments="--spring.datasource.url=jdbc:postgresql://localhost:5432/playbacklog,--spring.datasource.username=test,--spring.datasource.password=test,--playbacklog.storage.baseDir=/tmp/playbacklog"
+./mvnw spring-boot:run "-Dspring-boot.run.jvmArguments=-Dspring.datasource.url=jdbc:postgresql://localhost:5432/playbacklog -Dspring.datasource.username=playbacklog -Dspring.datasource.password=playbacklog -Dplaybacklog.storage.baseDir=/tmp/playbacklog"
 ````
 
 ### Beispiel REST Api
