@@ -5,6 +5,7 @@ import de.tuantu.playbacklog.persistence.PlaybackLogRepository;
 import de.tuantu.playbacklog.service.PlaybackLogJobService;
 import de.tuantu.playbacklog.service.domain.StoredFile;
 import de.tuantu.playbacklog.shared.StorageType;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.job.JobExecution;
@@ -29,6 +30,11 @@ public class PlaybackLogBatchJobIT {
 
     @Autowired
     private PlaybackLogJobService playbackLogJobService;
+
+    @BeforeEach
+    void clearRepository(){
+        repository.deleteAll();
+    }
 
     @Test
     void testEntireJobCompletesAndSavesData(){
