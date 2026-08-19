@@ -12,6 +12,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.OffsetDateTime;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
@@ -36,8 +37,8 @@ public class PlaybackLogProcessorTest {
                 150000
         );
 
-        when(workCatalogAPIService.getAdditionalData("USRC17607839")).thenReturn(new WorkCatalogDto(
-                "USRC17607839", "RADIO_WDR", "2026-01-15T08:30:00Z"));
+        when(workCatalogAPIService.getAdditionalData("USRC17607839")).thenReturn(Optional.of(new WorkCatalogDto(
+                "USRC17607839", "RADIO_WDR", "2026-01-15T08:30:00Z")));
 
         PlaybackLogEntity result = processor.process(input);
 
