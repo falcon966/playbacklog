@@ -9,6 +9,7 @@ import org.springframework.batch.core.launch.JobOperator;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.NoSuchElementException;
 import java.util.UUID;
 
 @Service
@@ -40,6 +41,9 @@ public class PlaybackLogJobService {
     }
 
     public JobExecution getJob(long jobId) {
-        return jobRepository.getJobExecution(jobId);
+        JobExecution job = jobRepository.getJobExecution(jobId);
+        if(job == null)
+            throw new NoSuchElementException("Job mit der ID " + jobId + " wurde nicht gefunden");
+        return job;
     }
 }

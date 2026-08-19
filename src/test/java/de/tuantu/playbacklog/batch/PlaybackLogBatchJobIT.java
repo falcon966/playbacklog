@@ -12,9 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.batch.test.context.SpringBatchTest;
 
 import java.nio.file.Path;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @IntegrationTest
 @SpringBatchTest
@@ -62,5 +64,12 @@ public class PlaybackLogBatchJobIT {
 
         assertThat(result).isNotNull();
         assertThat(result.getJobInstance()).isEqualTo(jobExecution.getJobInstance());
+    }
+
+    @Test
+    void testRetrieveJobNotFound(){
+        assertThatThrownBy(() -> playbackLogJobService.getJob(123123)).isInstanceOf(
+                NoSuchElementException.class
+        );
     }
 }
