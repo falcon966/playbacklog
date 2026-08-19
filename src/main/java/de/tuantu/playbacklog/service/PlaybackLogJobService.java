@@ -10,7 +10,6 @@ import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.NoSuchElementException;
-import java.util.UUID;
 
 @Service
 public class PlaybackLogJobService {
