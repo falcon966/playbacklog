@@ -38,4 +38,6 @@ public class PlaybacklogController {
         return BatchJobDto.from(job);
     }
 
+    // TODO Job restart/stop etc implementieren
+
 }
