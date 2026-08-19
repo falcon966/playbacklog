@@ -28,5 +28,5 @@ spring:
 
 playbacklog:
   storage:
-    baseDir: /tmp/playbacklog
+    baseDir: ${FILE_BASE_DIR:/tmp/playbacklog}
   batchSize: 100

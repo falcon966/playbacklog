@@ -17,6 +17,7 @@ FROM eclipse-temurin:25-jre
 WORKDIR /app
 
 RUN groupadd -r spring && useradd -r -g spring spring
+RUN mkdir -p /tmp/playbacklog && chown -R spring:spring /tmp/playbacklog
 USER spring:spring
 
 COPY --from=builder /app/target/*.jar app.jar
