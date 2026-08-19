@@ -7,8 +7,11 @@ import org.springframework.batch.core.job.parameters.JobParameters;
 import org.springframework.batch.core.job.parameters.JobParametersBuilder;
 import org.springframework.batch.core.launch.JobOperator;
 import org.springframework.batch.core.repository.JobRepository;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.NoSuchElementException;
 
 @Service
@@ -29,6 +32,7 @@ public class PlaybackLogJobService {
         JobParameters jobParameters = new JobParametersBuilder()
                 .addString("filePath", storedFile.storagePath().toAbsolutePath().toString())
                 .addString("filename", storedFile.filename())
+                .addLocalDateTime("startedAt", LocalDateTime.now())
                 .toJobParameters();
         try {
             return jobOperator.start(playbackLogImportJob, jobParameters);
@@ -39,7 +43,12 @@ public class PlaybackLogJobService {
     }
 
     public JobExecution getJob(long jobId) {
-        JobExecution job = jobRepository.getJobExecution(jobId);
+        JobExecution job;
+        try {
+            job = jobRepository.getJobExecution(jobId);
+        } catch (EmptyResultDataAccessException e) {
+            throw new NoSuchElementException("Job mit der ID " + jobId + " wurde nicht gefunden", e);
+        }
         if(job == null)
             throw new NoSuchElementException("Job mit der ID " + jobId + " wurde nicht gefunden");
         return job;

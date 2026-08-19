@@ -21,7 +21,7 @@ public class PlaybackLogEnrichingService implements ItemProcessor<PlaybackLogCsv
         this.workCatalogAPIService = workCatalogAPIService;
     }
 
-    @Value("#{stepExecution.jobExecution.jobInstance.id}")
+    @Value("#{stepExecution.jobExecution.id}")
     private Long jobId;
 
     @Value("#{jobParameters['filename']}")
