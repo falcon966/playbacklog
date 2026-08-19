@@ -14,6 +14,8 @@ public class SkipListenerService implements SkipListener<PlaybackLogCsvInputDto,
 
     private static final Logger log = LoggerFactory.getLogger(SkipListenerService.class);
 
+    //TODO Moelicherweise uebersprungene Zeilen in neue Datei für fix und retry schreiben
+
     @Override
     public void onSkipInRead(@NonNull Throwable t) {
         if (t instanceof FlatFileParseException ffpe) {
