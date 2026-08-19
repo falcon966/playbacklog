@@ -8,17 +8,17 @@ import de.tuantu.playbacklog.shared.StorageType;
 import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.job.JobExecution;
-import org.springframework.batch.test.JobLauncherTestUtils;
-import org.springframework.batch.test.JobOperatorTestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.batch.test.context.SpringBatchTest;
 
 import java.nio.file.Path;
+import java.time.Duration;
 import java.util.NoSuchElementException;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.awaitility.Awaitility.await;
 
 @IntegrationTest
 @SpringBatchTest
@@ -45,6 +45,14 @@ public class PlaybackLogBatchJobIT {
         );
 
         assertThat(jobExecution).isNotNull();
+
+        await().atMost(Duration.ofSeconds(10))
+                .untilAsserted(() -> {
+                    JobExecution current = playbackLogJobService.getJob(jobExecution.getId());
+                    assertThat(current.getStatus()).isEqualTo(BatchStatus.COMPLETED);
+                });
+
+        assertThat(repository.findAll()).hasSize(2);
     }
 
     @Test
