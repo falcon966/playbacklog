@@ -1,7 +1,9 @@
 spring:
   application:
     name: playbacklog
-
+  servlet:
+    multipart:
+      max-file-size: 1000MB
   batch:
     jdbc:
       initialize-schema: never
@@ -17,9 +19,11 @@ spring:
   jpa:
     hibernate:
       ddl-auto: none
-    show-sql: true
+    show-sql: false
     properties:
       hibernate:
+        jdbc:
+          batch_size: 100
         dialect: org.hibernate.dialect.PostgreSQLDialect
 
   liquibase:
