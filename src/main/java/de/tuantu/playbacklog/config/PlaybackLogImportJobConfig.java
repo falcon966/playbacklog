@@ -103,7 +103,7 @@ public class PlaybackLogImportJobConfig {
     public Step playbackLogStep(
             JobRepository jobRepository,
             PlatformTransactionManager transactionManager,
-            FlatFileItemReader<PlaybackLogCsvInputDto> reader,
+            FlatFileItemReader<PlaybackLogCsvInputDto> playbackLogItemReader,
             ItemProcessor<PlaybackLogCsvInputDto, PlaybackLogEntity> playbackLogProcessor,
             RepositoryItemWriter<PlaybackLogEntity> writer,
             SkipListenerService skipListener
@@ -112,7 +112,7 @@ public class PlaybackLogImportJobConfig {
         return new StepBuilder("playbackLogStep", jobRepository)
                 .<PlaybackLogCsvInputDto, PlaybackLogEntity>chunk(batchSize)
                 .transactionManager(transactionManager)
-                .reader(reader)
+                .reader(playbackLogItemReader)
                 .processor(playbackLogProcessor)
                 .writer(writer)
                 .faultTolerant()

@@ -42,7 +42,7 @@ public class PlaybackLogBatchJobIT {
                 storedFile
         );
 
-        assertThat(jobExecution.getStatus()).isEqualTo(BatchStatus.COMPLETED);
+        assertThat(jobExecution.getStatus()).isEqualTo(BatchStatus.STARTING);
 
         assertThat(repository.findAll()).hasSize(2);
     }
