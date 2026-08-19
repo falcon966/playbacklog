@@ -49,6 +49,7 @@ public class PlaybackLogEnrichingService implements ItemProcessor<PlaybackLogCsv
             entity.setTrackName(additionalData.get().trackName());
             entity.setRightsHolder(additionalData.get().rightsHolder());
         } else {
+            // Statt default Werte setzen -> Als Fehler markieren und retry
             entity.setArtistName("");
             entity.setTrackName("");
             entity.setRightsHolder("");

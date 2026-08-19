@@ -121,6 +121,7 @@ Zusätzlich sollten Duplikate bereits beim File-Upload abgelehnt werden, beispie
 - Das Anreichern mit zusätzlichen Daten ist ebenfalls nur ein Dummy. Echte REST-API-Requests und idealerweise ein Caching müssen implementiert werden.
 - Aufsetzen eines zentralen Fileservers oder Umstieg auf Blob-Storage (z. B. AWS S3) anstelle des lokalen Dateisystems für hochgeladene Dateien.
 - Erweiterung der Job-Steuerungs-APIs (Restart, Stop, etc.).
+- Abfangen der Work cataloque api call Fehler und retry
 - DLQ (Dead Letter Queue) oder eine spezifische Fehlerbehandlung für fehlerhafte Einträge anstelle von reinem Logging.
 - Möglicher Umstieg auf reines JDBC für noch bessere Insert-Performance beim Batch.
 
