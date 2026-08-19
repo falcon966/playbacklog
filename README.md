@@ -48,6 +48,8 @@ um große Datenmengen effizient verarbeiten und persistieren zu können. <br>
 
 Der Grobe Ablauf ist wie folgt:
 
+![Ablauf-Diagramm](AblaufDiagram.png)
+
 1. Der Client kann über eine REST-API CSV-Dateien hochladen. Die Dateien werden in einem Verzeichnis abgelegt.
 2. Ein Spring Batch Job für die Verarbeitung und den Import wird daraufhin asynchron gestartet.
 3. Der Client bekommt sofort eine Rückmeldung über den Start und kann über eine REST-API den Status des Jobs abfragen.
@@ -56,6 +58,8 @@ Der Grobe Ablauf ist wie folgt:
 6. Die Daten werden in die PostgreSQL-Datenbank importiert.
 
 ### Architektur
+
+![Architektur-Diagramm](ArchitekturDiagram.png)
 
 - Import
   - Upload per MultipartFile, Job-Anlage und Statusabfrage über REST.
