@@ -30,6 +30,12 @@ spring:
     enabled: true
     change-log: classpath:db/changelog/db.changelog-master.xml
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "health,metrics"
+
 playbacklog:
   storage:
     baseDir: ${FILE_BASE_DIR:/tmp/playbacklog}

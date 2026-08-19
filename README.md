@@ -24,7 +24,8 @@ docker compose up --build
 
 ### Beispiel REST Api
 
-Die OpenAPI-Dokumentation ist über GET /swagger-ui/index.html erreichbar
+Die OpenAPI-Dokumentation ist über GET /swagger-ui/index.html erreichbar <br>
+Metriken über GET /actuator/health und GET /actuator/metrics
 
 ````curl
 curl --request POST \
