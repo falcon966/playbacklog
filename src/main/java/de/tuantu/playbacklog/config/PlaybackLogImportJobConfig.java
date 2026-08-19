@@ -118,7 +118,7 @@ public class PlaybackLogImportJobConfig {
                 .faultTolerant()
                 .skip(FlatFileParseException.class)
                 .skip(ValidationException.class)
-                .skipLimit(skipLimit) // bei zu vielen fehler job fehlschlagen lassen
+                .skipLimit(skipLimit) // bei zu vielen Fehlern Job fehlschlagen lassen
                 .listener(skipListener)
                 .build();
     }

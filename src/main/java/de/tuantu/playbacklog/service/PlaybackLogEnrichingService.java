@@ -2,6 +2,7 @@ package de.tuantu.playbacklog.service;
 
 import de.tuantu.playbacklog.persistence.model.PlaybackLogEntity;
 import de.tuantu.playbacklog.service.domain.PlaybackLogCsvInputDto;
+import de.tuantu.playbacklog.service.domain.WorkCatalogDto;
 import org.jspecify.annotations.NonNull;
 import org.springframework.batch.infrastructure.item.ItemProcessor;
 import org.springframework.stereotype.Service;
@@ -9,13 +10,20 @@ import org.springframework.stereotype.Service;
 @Service
 public class PlaybackLogEnrichingService implements ItemProcessor<PlaybackLogCsvInputDto, PlaybackLogEntity> {
 
+    private WorkCatalogAPIService workCatalogAPIService;
+
+    public PlaybackLogEnrichingService(WorkCatalogAPIService workCatalogAPIService) {
+        this.workCatalogAPIService = workCatalogAPIService;
+    }
+
     @Override
     public PlaybackLogEntity process(@NonNull PlaybackLogCsvInputDto item) {
 
         // TODO enrich Data through api call
-        String artistName = resolveArtist(item.isrcCode());
-        String trackName = resolveTrack(item.isrcCode());
-        String rightsHolder = resolveRightsHolder(item.isrcCode());
+        WorkCatalogDto additionalData = workCatalogAPIService.getAdditionalData(item.isrcCode());
+        String artistName = additionalData.artistName();
+        String trackName = additionalData.trackName();
+        String rightsHolder = additionalData.rightsHolder();
         long listenedSeconds = (long) item.durationSeconds() * item.listenerCount();
 
         PlaybackLogEntity entity = new PlaybackLogEntity();
@@ -32,19 +40,6 @@ public class PlaybackLogEnrichingService implements ItemProcessor<PlaybackLogCsv
 
         return entity;
 
-    }
-
-    // Dummy functions
-    private String resolveTrack(String isrcCode) {
-        return "";
-    }
-
-    private String resolveRightsHolder(String isrcCode) {
-        return "";
-    }
-
-    private String resolveArtist(String isrcCode) {
-        return "";
     }
 
 }
